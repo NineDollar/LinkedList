@@ -3,6 +3,7 @@
 using namespace std;
 
 #include "LinkedList.h"
+#include "String.h"
 
 class IntObj : public Object {
     int data;
@@ -22,6 +23,26 @@ public:
 
     void Show() override {
         cout << "Data=" << data << '\t';
+    }
+};
+
+class StringObj : public Object {
+    String string1;
+public:
+
+    StringObj() {}
+
+    StringObj(const char *str) {
+        string1.SetString(str);
+    }
+
+    bool IsEqual(Object &object) override {
+        StringObj &stringObj = (StringObj &) object;
+        return string1 == stringObj.string1;
+    }
+
+    void Show() override {
+        string1.show();
     }
 };
 
@@ -47,5 +68,27 @@ int main() {
         list.AddNode(pn);
     }
     list.ShowList();
+
+    StringObj *stringObj;
+    Node *node;
+    List list1;
+    char array[4][20] = {{"This is One."},
+                         {"This is two."},
+                         {"This is four."},
+                         {"This is five."}};
+    for (int i = 0; i < 4; ++i) {
+        stringObj = new StringObj(array[i]);
+        node = new Node;
+        node->FillInfo(stringObj);
+        list1.AddNode(node);
+    }
+    list1.ShowList();
+    StringObj stringObj1("This is One.");
+    node = list1.LookUp(stringObj1);
+    if (node) {
+        cout << "stringObj1 in list1 Yes!" << endl;
+    } else{
+        cout << "stringObj1 in list1 No!" << endl;
+    }
     return 0;
 }
